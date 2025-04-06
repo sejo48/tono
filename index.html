@@ -5,132 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orden de Pedido - El Chante</title>
     <style>
-        /* --- Estilos Generales (Rojo Oscuro) --- */
+        /* --- Estilos Generales (Tema Claro) --- */
         body {
             font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6; margin: 0; padding: 20px; background-color: #3b1e1e; color: #f0f0f0;
+            line-height: 1.6; margin: 0; padding: 20px;
+            background-color: #f8f9fa; /* Fondo gris muy claro */
+            color: #212529; /* Texto oscuro principal */
         }
         .container {
-            max-width: 750px; margin: 20px auto; background: #4d2a2a; padding: 30px;
-            border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); border: 1px solid #6a3a3a;
+            max-width: 750px; margin: 20px auto; background: #ffffff; /* Fondo blanco */
+            padding: 30px; border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            border: 1px solid #dee2e6; /* Borde gris claro */
         }
-        h1 { color: #e55c20; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 2.2em; }
-        h2 { color: #f0a549; text-align: center; margin-bottom: 35px; font-size: 1.4em; font-weight: 400; }
-        .seccion-formulario { margin-bottom: 35px; border-bottom: 1px solid #6a3a3a; padding-bottom: 25px; }
+        /* Títulos */
+        h1 {
+            color: #c44a15; /* Naranja rojizo oscuro */
+            text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 2.2em;
+         }
+        h2 {
+            color: #e55c20; /* Naranja rojizo más claro para subtítulo */
+            text-align: center; margin-bottom: 35px; font-size: 1.4em; font-weight: 400;
+         }
+        /* Secciones y Títulos de Categoría */
+        .seccion-formulario { margin-bottom: 35px; border-bottom: 1px solid #dee2e6; padding-bottom: 25px; }
         .seccion-formulario:last-of-type { border-bottom: none; }
-        .seccion-formulario h3 { color: #e55c20; border-bottom: 2px solid #e55c20; padding-bottom: 8px; margin-bottom: 20px; font-size: 1.3em; font-weight: 500; }
+        .seccion-formulario h3 {
+            color: #c44a15; /* Naranja rojizo oscuro */
+            border-bottom: 2px solid #e55c20; /* Borde naranja más claro */
+            padding-bottom: 8px; margin-bottom: 20px; font-size: 1.3em; font-weight: 500;
+        }
+        /* Datos del Cliente */
         .campo-cliente { margin-bottom: 15px; }
-        .campo-cliente label { display: block; margin-bottom: 5px; font-weight: 500; color: #d0d0d0; }
+        .campo-cliente label { display: block; margin-bottom: 5px; font-weight: 500; color: #495057; } /* Gris oscuro */
         .campo-cliente input[type="text"], .campo-cliente input[type="tel"] {
-            width: 100%; padding: 10px; border: 1px solid #7d4a4a; border-radius: 6px;
-            background-color: #5c3a3a; color: #f0f0f0; font-size: 1em; box-sizing: border-box;
+            width: 100%; padding: 10px; border: 1px solid #ced4da; /* Borde gris */
+            border-radius: 6px; background-color: #ffffff; /* Fondo blanco */
+            color: #212529; /* Texto oscuro */
+            font-size: 1em; box-sizing: border-box;
         }
-        .campo-cliente input[type="text"]:focus, .campo-cliente input[type="tel"]:focus { outline: none; border-color: #f0a549; box-shadow: 0 0 5px rgba(240, 165, 73, 0.5); }
-        .item-menu { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; border: 1px solid #6a3a3a; border-radius: 8px; background-color: #553535; transition: background-color 0.3s ease, box-shadow 0.3s ease; }
-        .item-menu:hover { background-color: #6a4545; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
+        .campo-cliente input[type="text"]:focus, .campo-cliente input[type="tel"]:focus {
+            outline: none; border-color: #e55c20; /* Borde naranja al enfocar */
+            box-shadow: 0 0 5px rgba(229, 92, 32, 0.3);
+        }
+        /* Items del Menú */
+        .item-menu {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; padding: 15px; border: 1px solid #dee2e6; /* Borde gris claro */
+            border-radius: 8px; background-color: #f8f9fa; /* Fondo gris muy claro para items */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .item-menu:hover { background-color: #e9ecef; /* Gris un poco más oscuro al pasar */ box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); }
         .item-info { flex-grow: 1; margin-right: 15px; flex-basis: 60%; min-width: 200px; }
-        .item-info .nombre-principal { display: block; font-weight: 500; font-size: 1.05em; color: #ffffff; margin-bottom: 3px; }
-        .item-info .descripcion { display: block; font-size: 0.85em; color: #c0c0c0; }
-        .item-precio { font-weight: bold; color: #f0a549; min-width: 70px; text-align: right; font-size: 1.1em; margin-left: 10px; flex-basis: 15%; }
-        .item-cantidad { display: flex; align-items: center; margin-left: 15px; flex-basis: 20%; min-width: 100px; }
-        .item-cantidad label { margin-right: 8px; font-size: 0.9em; color: #d0d0d0; }
-        .item-cantidad input[type="number"] { width: 65px; padding: 8px; text-align: center; border: 1px solid #7d4a4a; border-radius: 6px; background-color: #5c3a3a; color: #f0f0f0; font-size: 1em; -moz-appearance: textfield; }
-        .item-cantidad input[type="number"]:focus { outline: none; border-color: #f0a549; box-shadow: 0 0 5px rgba(240, 165, 73, 0.5); }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        #notas-container label { display: block; margin-bottom: 10px; font-weight: 500; color: #d0d0d0; }
-        #notas { width: 100%; padding: 10px; border: 1px solid #7d4a4a; border-radius: 6px; background-color: #5c3a3a; color: #f0f0f0; font-size: 0.95em; box-sizing: border-box; min-height: 80px; resize: vertical; }
-        #notas:focus { outline: none; border-color: #f0a549; box-shadow: 0 0 5px rgba(240, 165, 73, 0.5); }
-        #generar-pedido { /* Estilo botón principal */
-            display: block; width: 100%; padding: 15px; background: linear-gradient(to bottom, #e55c20, #c44a15); /* Gradiente Naranja */
-            color: white; border: none; border-radius: 8px; font-size: 1.15em; cursor: pointer; margin-top: 25px; font-weight: bold; text-align: center; text-decoration: none; transition: background 0.3s ease, transform 0.1s ease; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        .item-info .nombre-principal { display: block; font-weight: 500; font-size: 1.05em; color: #343a40; /* Texto oscuro */ margin-bottom: 3px; }
+        .item-info .descripcion { display: block; font-size: 0.85em; color: #6c757d; } /* Texto gris */
+        .item-precio {
+            font-weight: bold; color: #198754; /* Verde oscuro para precios */
+            min-width: 70px; text-align: right; font-size: 1.1em; margin-left: 10px; flex-basis: 15%;
         }
-        #generar-pedido:hover { background: linear-gradient(to bottom, #c44a15, #a33a0f); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); }
+        /* Controles de Cantidad */
+        .item-cantidad { display: flex; align-items: center; margin-left: 15px; flex-basis: 20%; min-width: 100px; }
+        .item-cantidad label { margin-right: 8px; font-size: 0.9em; color: #495057; }
+        .item-cantidad input[type="number"] {
+            width: 65px; padding: 8px; text-align: center; border: 1px solid #ced4da; /* Borde gris */
+            border-radius: 6px; background-color: #ffffff; color: #212529; font-size: 1em; -moz-appearance: textfield;
+        }
+        .item-cantidad input[type="number"]:focus { outline: none; border-color: #e55c20; box-shadow: 0 0 5px rgba(229, 92, 32, 0.3); }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        /* Notas Adicionales */
+        #notas-container label { display: block; margin-bottom: 10px; font-weight: 500; color: #495057; }
+        #notas {
+            width: 100%; padding: 10px; border: 1px solid #ced4da; border-radius: 6px;
+            background-color: #ffffff; color: #212529; font-size: 0.95em;
+            box-sizing: border-box; min-height: 80px; resize: vertical;
+        }
+        #notas:focus { outline: none; border-color: #e55c20; box-shadow: 0 0 5px rgba(229, 92, 32, 0.3); }
+        /* Botón Principal */
+        #generar-pedido {
+            display: block; width: 100%; padding: 15px; background: linear-gradient(to bottom, #e55c20, #c44a15); /* Gradiente Naranja */
+            color: white; border: none; border-radius: 8px; font-size: 1.15em; cursor: pointer;
+            margin-top: 25px; font-weight: bold; text-align: center; text-decoration: none;
+            transition: background 0.3s ease, transform 0.1s ease; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+        #generar-pedido:hover { background: linear-gradient(to bottom, #c44a15, #a33a0f); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
         #generar-pedido:active { transform: scale(0.98); }
-        #mensaje-error { color: #ffabab; background-color: rgba(100, 30, 30, 0.3); border: 1px solid #a05050; padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center; display: none; }
+        /* Mensaje de Error */
+        #mensaje-error {
+            color: #842029; /* Texto rojo oscuro */ background-color: #f8d7da; /* Fondo rojo claro */
+            border: 1px solid #f5c2c7; /* Borde rojo */
+            padding: 10px; border-radius: 6px; margin-top: 15px; text-align: center; display: none;
+        }
 
-        /* --- Estilos del Modal --- */
+        /* --- Estilos del Modal (Tema Claro) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.75); /* Fondo oscurecido */
-            display: none; /* Oculto por defecto */
-            justify-content: center; align-items: center;
-            z-index: 1000;
-            padding: 20px; /* Espacio por si el modal es muy alto */
-            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.6); /* Fondo oscurecido */
+            display: none; justify-content: center; align-items: center;
+            z-index: 1000; padding: 20px; box-sizing: border-box;
         }
         .modal-content {
-            background: #4d2a2a; /* Fondo rojo oscuro del modal */
-            padding: 25px 30px;
-            border-radius: 10px;
-            border: 1px solid #6a3a3a;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
-            z-index: 1001;
-            max-width: 90%;
-            width: 550px; /* Ancho del modal */
-            max-height: 90vh; /* Altura máxima */
-            overflow-y: auto; /* Scroll si el contenido es muy largo */
-            position: relative; /* Para posicionar el botón de cerrar */
+            background: #ffffff; /* Fondo blanco del modal */
+            padding: 25px 30px; border-radius: 10px; border: 1px solid #dee2e6; /* Borde gris */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra */
+            z-index: 1001; max-width: 90%; width: 550px; max-height: 90vh;
+            overflow-y: auto; position: relative;
         }
         .modal-content h3 {
-            color: #e55c20; /* Título del modal naranja */
-            margin-top: 0;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 1.5em;
+            color: #c44a15; /* Título naranja oscuro */
+            margin-top: 0; margin-bottom: 20px; text-align: center; font-size: 1.5em;
         }
-        .modal-content pre { /* Área para mostrar el resumen del pedido */
-            background-color: #553535; /* Fondo rojo oscuro más claro */
-            color: #f0f0f0;
-            padding: 15px;
-            border-radius: 6px;
-            border: 1px solid #7d4a4a;
-            font-family: monospace; /* Fuente monoespaciada */
-            white-space: pre-wrap; /* Ajustar líneas largas */
-            word-wrap: break-word; /* Romper palabras largas si es necesario */
-            max-height: 40vh; /* Altura máxima para el texto */
-            overflow-y: auto; /* Scroll si el texto es muy largo */
-            font-size: 0.95em;
+        .modal-content pre { /* Área de resumen */
+            background-color: #e9ecef; /* Fondo gris claro */ color: #212529; /* Texto oscuro */
+            padding: 15px; border-radius: 6px; border: 1px solid #ced4da; /* Borde gris */
+            font-family: monospace; white-space: pre-wrap; word-wrap: break-word;
+            max-height: 40vh; overflow-y: auto; font-size: 0.95em;
         }
-        .modal-botones {
-            display: flex;
-            justify-content: space-between; /* Espacio entre botones */
-            margin-top: 25px;
-            gap: 15px; /* Espacio entre botones */
-        }
-        .modal-botones button, .modal-botones a { /* Estilo común para botones del modal */
-             flex-grow: 1; /* Ocupar espacio disponible */
-             padding: 12px 15px;
-             border: none; border-radius: 8px; font-size: 1em;
+        .modal-botones { display: flex; justify-content: space-between; margin-top: 25px; gap: 15px; }
+        .modal-botones button, .modal-botones a {
+             flex-grow: 1; padding: 12px 15px; border: none; border-radius: 8px; font-size: 1em;
              cursor: pointer; font-weight: bold; text-align: center;
-             transition: background 0.3s ease, transform 0.1s ease;
-             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+             transition: background 0.3s ease, transform 0.1s ease; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .modal-botones button:active, .modal-botones a:active { transform: scale(0.97); }
 
-        #modal-boton-cerrar { /* Botón para editar/cerrar */
-            background-color: #777; color: white;
+        #modal-boton-cerrar { /* Botón Corregir */
+            background-color: #6c757d; /* Gris oscuro */ color: white;
         }
-        #modal-boton-cerrar:hover { background-color: #666; }
+        #modal-boton-cerrar:hover { background-color: #5a6268; }
 
-        #modal-boton-enviar { /* Botón para enviar WhatsApp */
+        #modal-boton-enviar { /* Botón Enviar WhatsApp */
             background: linear-gradient(to bottom, #25D366, #128C7E); color: white;
-            text-decoration: none; /* Quitar subrayado del enlace */
-            display: inline-block; /* Para que padding funcione bien en <a> */
+            text-decoration: none; display: inline-block;
         }
         #modal-boton-enviar:hover { background: linear-gradient(to bottom, #128C7E, #075E54); }
 
-        /* Botón de cerrar (X) opcional */
-        .modal-close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-            line-height: 1;
+        .modal-close-btn { /* Botón X */
+            position: absolute; top: 10px; right: 15px; font-size: 1.8em; font-weight: bold;
+            color: #adb5bd; /* Gris claro */ cursor: pointer; line-height: 1;
         }
-        .modal-close-btn:hover { color: #fff; }
+        .modal-close-btn:hover { color: #495057; } /* Gris oscuro */
 
     </style>
 </head>
@@ -209,13 +222,15 @@
 
         <button type="button" id="generar-pedido">Revisar Pedido</button>
 
-        </form>
+    </form>
 </div>
 
 <div class="modal-overlay" id="modal-confirmacion">
     <div class="modal-content">
-        <span class="modal-close-btn" id="modal-boton-x">&times;</span> <h3>Revisa tu Pedido</h3>
-        <pre id="modal-resumen-texto"></pre> <div class="modal-botones">
+        <span class="modal-close-btn" id="modal-boton-x">&times;</span>
+        <h3>Revisa tu Pedido</h3>
+        <pre id="modal-resumen-texto"></pre>
+        <div class="modal-botones">
             <button type="button" id="modal-boton-cerrar">Corregir Pedido</button>
             <a href="#" id="modal-boton-enviar" target="_blank">Enviar por WhatsApp</a>
         </div>
@@ -223,47 +238,38 @@
 </div>
 
 <script>
-    // --- Script con lógica del Modal ---
+    // --- Script (Sin cambios en la lógica) ---
     const numeroWhatsApp = '50664304540';
     const botonGenerar = document.getElementById('generar-pedido');
-    // Elementos del Modal
     const modalOverlay = document.getElementById('modal-confirmacion');
     const modalTextoResumen = document.getElementById('modal-resumen-texto');
     const modalBotonCerrar = document.getElementById('modal-boton-cerrar');
-    const modalBotonX = document.getElementById('modal-boton-x'); // Botón X
+    const modalBotonX = document.getElementById('modal-boton-x');
     const modalBotonEnviar = document.getElementById('modal-boton-enviar');
-    // Otros elementos del formulario
     const formulario = document.getElementById('menu-form');
     const campoNotas = document.getElementById('notas');
     const campoNombre = document.getElementById('cliente-nombre');
     const campoTelefono = document.getElementById('cliente-telefono');
     const divError = document.getElementById('mensaje-error');
 
-    // Función para mostrar errores (sin cambios)
     function mostrarError(mensaje) {
         divError.textContent = mensaje;
         divError.style.display = 'block';
-        // No limpiar ni ocultar nada más aquí, el modal no se mostrará
     }
-
-    // Función para cerrar el modal
     function cerrarModal() {
         modalOverlay.style.display = 'none';
     }
 
-    // Event listener para el botón principal "Revisar Pedido"
     botonGenerar.addEventListener('click', () => {
-        divError.style.display = 'none'; divError.textContent = ''; // Ocultar error previo
+        divError.style.display = 'none'; divError.textContent = '';
         const clienteNombre = campoNombre.value.trim();
         const clienteTelefono = campoTelefono.value.trim();
 
-        // --- Validaciones (igual que antes) ---
         if (!clienteNombre) { mostrarError('Por favor, ingresa tu nombre.'); campoNombre.focus(); return; }
         if (!clienteTelefono) { mostrarError('Por favor, ingresa tu número de teléfono.'); campoTelefono.focus(); return; }
         const telefonoPattern = /^[0-9]{4}-?[0-9]{4}$/;
         if (!telefonoPattern.test(clienteTelefono)) { mostrarError('Por favor, ingresa un número de teléfono válido (Ej: 8888-8888 o 88888888).'); campoTelefono.focus(); return; }
 
-        // --- Construcción del Mensaje (igual que antes) ---
         let mensaje = `*Pedido para:* ${clienteNombre}\n*Teléfono:* ${clienteTelefono}\n--------------------\n`;
         mensaje += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
         let totalPedido = 0;
@@ -300,33 +306,18 @@
         mensaje += `\n\nPuedes pagar por *SINPE Móvil* al: *${sinpeFormateado}*`;
         mensaje += '\n\n¡Gracias por su pedido!';
 
-        // --- Mostrar el Modal ---
-        modalTextoResumen.textContent = mensaje; // Poner el texto en el <pre> del modal
+        modalTextoResumen.textContent = mensaje;
         const mensajeCodificado = encodeURIComponent(mensaje);
         const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
-        modalBotonEnviar.href = urlWhatsApp; // Asignar URL al botón de enviar del modal
+        modalBotonEnviar.href = urlWhatsApp;
 
-        modalOverlay.style.display = 'flex'; // Mostrar el modal (usando flex para centrar)
+        modalOverlay.style.display = 'flex';
     });
 
-    // Event listeners para cerrar el modal
     modalBotonCerrar.addEventListener('click', cerrarModal);
-    modalBotonX.addEventListener('click', cerrarModal); // Cerrar con la X
-
-    // Event listener para cerrar el modal al hacer clic fuera de él (en el overlay)
-    modalOverlay.addEventListener('click', (event) => {
-        // Si el clic fue directamente en el overlay (fondo oscuro) y no en el contenido del modal
-        if (event.target === modalOverlay) {
-            cerrarModal();
-        }
-    });
-
-     // Event listener para el botón de enviar del modal (opcional: cerrar modal después de enviar)
-     modalBotonEnviar.addEventListener('click', () => {
-         // Pequeña demora para asegurar que el enlace de WhatsApp se abra antes de cerrar el modal
-         setTimeout(cerrarModal, 300);
-     });
-
+    modalBotonX.addEventListener('click', cerrarModal);
+    modalOverlay.addEventListener('click', (event) => { if (event.target === modalOverlay) { cerrarModal(); } });
+    modalBotonEnviar.addEventListener('click', () => { setTimeout(cerrarModal, 300); });
 </script>
 
 </body>
