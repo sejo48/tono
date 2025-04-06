@@ -184,7 +184,7 @@
 <body>
 
 <div class="container">
-    <h1>Orden de Pedido El&nbsp;Chante</h1>
+    <h1>Orden de Pedido - El&nbsp;Chante</h1>
     <h2>Realiza tu Pedido Online</h2>
 
     <form id="menu-form">
@@ -272,7 +272,7 @@
 </div>
 
 <script>
-    // --- Script (Sin cambios en la lógica) ---
+    // --- Script con lógica de formato diferenciado para Modal y WhatsApp ---
     const numeroWhatsApp = '50664304540';
     const botonGenerar = document.getElementById('generar-pedido');
     const modalOverlay = document.getElementById('modal-confirmacion');
@@ -299,13 +299,20 @@
         const clienteNombre = campoNombre.value.trim();
         const clienteTelefono = campoTelefono.value.trim();
 
+        // --- Validaciones ---
         if (!clienteNombre) { mostrarError('Por favor, ingresa tu nombre.'); campoNombre.focus(); return; }
         if (!clienteTelefono) { mostrarError('Por favor, ingresa tu número de teléfono.'); campoTelefono.focus(); return; }
         const telefonoPattern = /^[0-9]{4}-?[0-9]{4}$/;
         if (!telefonoPattern.test(clienteTelefono)) { mostrarError('Por favor, ingresa un número de teléfono válido (Ej: 8888-8888 o 88888888).'); campoTelefono.focus(); return; }
 
-        let mensaje = `*Pedido para:* ${clienteNombre}\n*Teléfono:* ${clienteTelefono}\n--------------------\n`;
-        mensaje += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
+        // --- Construcción del Mensaje ---
+        // Versión para WhatsApp (con asteriscos para negrita)
+        let mensajeWhatsApp = `*Pedido para:* ${clienteNombre}\n*Teléfono:* ${clienteTelefono}\n--------------------\n`;
+        mensajeWhatsApp += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
+        // Versión para Modal (sin asteriscos en resumen)
+        let mensajeModal = `Pedido para: ${clienteNombre}\nTeléfono: ${clienteTelefono}\n--------------------\n`;
+        mensajeModal += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
+
         let totalPedido = 0;
         let hayItems = false;
         const inputsCantidad = formulario.querySelectorAll('input[type="number"]');
@@ -316,7 +323,9 @@
                 hayItems = true;
                 const nombre = input.getAttribute('data-nombre');
                 const precio = parseFloat(input.getAttribute('data-precio'));
-                mensaje += `\n- ${cantidad} x ${nombre}`;
+                const lineaPedido = `\n- ${cantidad} x ${nombre}`;
+                mensajeWhatsApp += lineaPedido; // Añadir a ambas versiones
+                mensajeModal += lineaPedido;
                 totalPedido += cantidad * precio;
             }
         });
@@ -329,25 +338,42 @@
         }
 
         const notas = campoNotas.value.trim();
-        if (notas) { mensaje += `\n\n*Notas Adicionales:* ${notas}`; }
+        if (notas) {
+             const lineaNotas = `\n\n*Notas Adicionales:* ${notas}`; // Con asterisco para WhatsApp
+             const lineaNotasModal = `\n\nNotas Adicionales: ${notas}`; // Sin asterisco para Modal
+             mensajeWhatsApp += lineaNotas;
+             mensajeModal += lineaNotasModal;
+        }
 
+        // --- Añadir Total y Opción SINPE ---
         const totalFormateado = totalPedido.toLocaleString('es-CR', { style: 'currency', currency: 'CRC' });
-        mensaje += `\n\n--------------------`;
-        mensaje += `\n*Total Aproximado:* ${totalFormateado}`;
+        const separador = `\n\n--------------------`;
+        const lineaTotalWhatsApp = `\n*Total Aproximado:* ${totalFormateado}`;
+        const lineaTotalModal = `\nTotal Aproximado: ${totalFormateado}`; // Sin asterisco
 
+        // Extraer y formatear número SINPE
         const sinpeNumero = numeroWhatsApp.slice(-8);
         const sinpeFormateado = `${sinpeNumero.slice(0, 4)}-${sinpeNumero.slice(4)}`;
-        mensaje += `\n\nPuedes pagar por *SINPE Móvil* al: *${sinpeFormateado}*`;
-        mensaje += '\n\n¡Gracias por su pedido!';
+        const lineaSinpeWhatsApp = `\n\nPuedes pagar por *SINPE Móvil* al: *${sinpeFormateado}*`;
+        const lineaSinpeModal = `\n\nPuedes pagar por SINPE Móvil al: ${sinpeFormateado}`; // Sin asterisco
 
-        modalTextoResumen.textContent = mensaje;
-        const mensajeCodificado = encodeURIComponent(mensaje);
+        const agradecimiento = '\n\n¡Gracias por su pedido!';
+
+        // Construir mensajes finales
+        mensajeWhatsApp += separador + lineaTotalWhatsApp + lineaSinpeWhatsApp + agradecimiento;
+        mensajeModal += separador + lineaTotalModal + lineaSinpeModal + agradecimiento;
+
+        // --- Mostrar el Modal ---
+        modalTextoResumen.textContent = mensajeModal; // Usar versión sin asteriscos para el modal
+
+        const mensajeCodificado = encodeURIComponent(mensajeWhatsApp); // Usar versión CON asteriscos para WhatsApp
         const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
-        modalBotonEnviar.href = urlWhatsApp;
+        modalBotonEnviar.href = urlWhatsApp; // Asignar URL al botón de enviar del modal
 
-        modalOverlay.style.display = 'flex';
+        modalOverlay.style.display = 'flex'; // Mostrar el modal
     });
 
+    // --- Event listeners del Modal (sin cambios) ---
     modalBotonCerrar.addEventListener('click', cerrarModal);
     modalBotonX.addEventListener('click', cerrarModal);
     modalOverlay.addEventListener('click', (event) => { if (event.target === modalOverlay) { cerrarModal(); } });
