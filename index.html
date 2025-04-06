@@ -11,6 +11,8 @@
             line-height: 1.6; margin: 0; padding: 20px;
             background-color: #f8f9fa; /* Fondo gris muy claro */
             color: #212529; /* Texto oscuro principal */
+            -webkit-text-size-adjust: 100%; /* Prevenir ajuste automático de texto en móviles */
+            text-size-adjust: 100%;
         }
         .container {
             max-width: 750px; margin: 20px auto; background: #ffffff; /* Fondo blanco */
@@ -144,6 +146,38 @@
             color: #adb5bd; /* Gris claro */ cursor: pointer; line-height: 1;
         }
         .modal-close-btn:hover { color: #495057; } /* Gris oscuro */
+
+        /* --- Media Query para Móviles --- */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em; /* Reducir tamaño H1 para móviles */
+            }
+            h2 {
+                font-size: 1.2em; /* Reducir tamaño H2 para móviles */
+            }
+            .container {
+                padding: 20px; /* Menos padding en el contenedor */
+                margin: 10px auto; /* Menos margen vertical */
+            }
+            .item-info {
+               margin-right: 10px; /* Menos espacio */
+               min-width: 150px; /* Permitir que sea un poco más estrecho */
+            }
+            .item-cantidad {
+               margin-left: 10px; /* Menos espacio */
+               min-width: 90px;
+            }
+            .item-cantidad input[type="number"] {
+                width: 55px; /* Input de cantidad más pequeño */
+            }
+            .modal-content {
+                padding: 20px 25px; /* Menos padding en modal */
+                width: 95%; /* Modal casi ancho completo */
+            }
+            .modal-botones {
+                flex-direction: column; /* Botones uno debajo del otro */
+            }
+        }
 
     </style>
 </head>
