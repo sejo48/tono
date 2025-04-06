@@ -306,10 +306,8 @@
         if (!telefonoPattern.test(clienteTelefono)) { mostrarError('Por favor, ingresa un número de teléfono válido (Ej: 8888-8888 o 88888888).'); campoTelefono.focus(); return; }
 
         // --- Construcción del Mensaje ---
-        // Versión para WhatsApp (con asteriscos para negrita)
         let mensajeWhatsApp = `*Pedido para:* ${clienteNombre}\n*Teléfono:* ${clienteTelefono}\n--------------------\n`;
         mensajeWhatsApp += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
-        // Versión para Modal (sin asteriscos en resumen)
         let mensajeModal = `Pedido para: ${clienteNombre}\nTeléfono: ${clienteTelefono}\n--------------------\n`;
         mensajeModal += '¡Hola El Chante! Quisiera hacer el siguiente pedido:\n';
 
@@ -324,7 +322,7 @@
                 const nombre = input.getAttribute('data-nombre');
                 const precio = parseFloat(input.getAttribute('data-precio'));
                 const lineaPedido = `\n- ${cantidad} x ${nombre}`;
-                mensajeWhatsApp += lineaPedido; // Añadir a ambas versiones
+                mensajeWhatsApp += lineaPedido;
                 mensajeModal += lineaPedido;
                 totalPedido += cantidad * precio;
             }
@@ -339,23 +337,28 @@
 
         const notas = campoNotas.value.trim();
         if (notas) {
-             const lineaNotas = `\n\n*Notas Adicionales:* ${notas}`; // Con asterisco para WhatsApp
-             const lineaNotasModal = `\n\nNotas Adicionales: ${notas}`; // Sin asterisco para Modal
+             const lineaNotas = `\n\n*Notas Adicionales:* ${notas}`;
+             const lineaNotasModal = `\n\nNotas Adicionales: ${notas}`;
              mensajeWhatsApp += lineaNotas;
              mensajeModal += lineaNotasModal;
         }
 
-        // --- Añadir Total y Opción SINPE ---
-        const totalFormateado = totalPedido.toLocaleString('es-CR', { style: 'currency', currency: 'CRC' });
+        // --- Añadir Total y Opción SINPE (con símbolo manual) ---
+        // Formatear solo el número
+        const numeroFormateado = totalPedido.toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        // Añadir símbolo manualmente
+        const totalConSimbolo = `₡ ${numeroFormateado}`; // Añadir espacio después del símbolo
+
         const separador = `\n\n--------------------`;
-        const lineaTotalWhatsApp = `\n*Total Aproximado:* ${totalFormateado}`;
-        const lineaTotalModal = `\nTotal Aproximado: ${totalFormateado}`; // Sin asterisco
+        // Usar totalConSimbolo en ambas versiones, pero con/sin asteriscos en la etiqueta
+        const lineaTotalWhatsApp = `\n*Total Aproximado:* ${totalConSimbolo}`;
+        const lineaTotalModal = `\nTotal Aproximado: ${totalConSimbolo}`;
 
         // Extraer y formatear número SINPE
         const sinpeNumero = numeroWhatsApp.slice(-8);
         const sinpeFormateado = `${sinpeNumero.slice(0, 4)}-${sinpeNumero.slice(4)}`;
         const lineaSinpeWhatsApp = `\n\nPuedes pagar por *SINPE Móvil* al: *${sinpeFormateado}*`;
-        const lineaSinpeModal = `\n\nPuedes pagar por SINPE Móvil al: ${sinpeFormateado}`; // Sin asterisco
+        const lineaSinpeModal = `\n\nPuedes pagar por SINPE Móvil al: ${sinpeFormateado}`;
 
         const agradecimiento = '\n\n¡Gracias por su pedido!';
 
@@ -364,13 +367,13 @@
         mensajeModal += separador + lineaTotalModal + lineaSinpeModal + agradecimiento;
 
         // --- Mostrar el Modal ---
-        modalTextoResumen.textContent = mensajeModal; // Usar versión sin asteriscos para el modal
+        modalTextoResumen.textContent = mensajeModal;
 
-        const mensajeCodificado = encodeURIComponent(mensajeWhatsApp); // Usar versión CON asteriscos para WhatsApp
+        const mensajeCodificado = encodeURIComponent(mensajeWhatsApp);
         const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensajeCodificado}`;
-        modalBotonEnviar.href = urlWhatsApp; // Asignar URL al botón de enviar del modal
+        modalBotonEnviar.href = urlWhatsApp;
 
-        modalOverlay.style.display = 'flex'; // Mostrar el modal
+        modalOverlay.style.display = 'flex';
     });
 
     // --- Event listeners del Modal (sin cambios) ---
